@@ -1,21 +1,35 @@
 package Wojna;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Logger {
+public class Logger implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private List<String> logs;
 
-    private String filename;
-
-    public Logger(String filename) {
-        this.filename = filename;
+    public Logger() {
+        this.logs = new ArrayList<>();
     }
 
-    public void log(String message) {
-        try (FileWriter writer = new FileWriter(filename, true)) {
-            writer.write(message + "\n");
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void logAction(String action) {
+        String timestamp = LocalDateTime.now().toString();
+        logs.add(timestamp + ": " + action);
+        System.out.println("Logged action: " + action);
+    }
+
+    public void generateTurnReport() {
+        System.out.println("\n===== Turn Report =====");
+        for (String log : logs) {
+            System.out.println(log);
+        }
+        System.out.println("========================\n");
+    }
+
+    public void printLogs() {
+        for (String log : logs) {
+            System.out.println(log);
         }
     }
 }
